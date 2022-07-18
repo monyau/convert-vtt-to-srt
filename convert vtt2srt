@@ -5,14 +5,22 @@ import sys, os
 import codecs
 
 
+#@markdown ---
+#@markdown ### Enter a inputpath of vtt in Google Drive:
 inputPath = "" #@param {type:"string"}
+#@markdown ---
+
 listing = os.listdir(inputPath)
 os.chdir(inputPath)
 
-outputPath_srt = "/content" #@param {type:"string"}
+
+#@markdown ---
+#@markdown ### Enter a outputpath of srt in Google Drive:
+outputPath_srt = "" #@param {type:"string"}
+#@markdown ---
+
 if not os.path.exists(outputPath_srt):
     os.makedirs(outputPath_srt)
-
 
 
     
