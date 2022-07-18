@@ -1,0 +1,67 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import sys, os
+import codecs
+
+
+inputPath = "" #@param {type:"string"}
+listing = os.listdir(inputPath)
+os.chdir(inputPath)
+
+outputPath_srt = "/content" #@param {type:"string"}
+if not os.path.exists(outputPath_srt):
+    os.makedirs(outputPath_srt)
+
+
+
+    
+def convert_vtt2srt(InputFileName,OutputFileName):                    
+    
+    try:
+        file1 = inputPath + '/' + InputFileName
+        decoded = file1.decode('UTF-8')
+        file1 = codecs.open(inputPath + '/' + InputFileName, 'r', encoding='utf-8', errors='strict')
+    except:             #### UnicodeDecodeError:
+        file1 = codecs.open(inputPath + '/' + InputFileName, 'r', encoding='utf-8', errors='strict')
+        
+        
+    file2 = codecs.open(outputPath_srt + '/' + OutputFileName,"w+", encoding="utf-8")
+    line = file1.readline()
+    while line:
+ 
+        if line.find("WEBVTT") > -1:
+            line = file1.readline()
+            
+        elif line.find("-->") > -1:
+            # vtt timas 00:00:24.500 --> 00:00:29.900
+            # srt timas 00:00:24,500 --> 00:00:29,900
+            line = line.replace(".",",")
+            line2 = line.strip()+ "\r\n"              # new line for MS windows
+            file2.write(line2)    
+
+            line2 = line.strip()+ "\r\n"              # new line for MS windows
+            file2.write(line2)    
+
+        # read the next line
+        line = file1.readline()
+    
+    file1.close()
+    file2.close()
+
+
+for InputFileName in listing:
+
+    if os.path.isdir(InputFileName):
+        pass
+    else:
+        if InputFileName.endswith("vtt"):
+            OutputFileName = InputFileName.replace(".vtt",".cht.srt")
+        else:
+            OutputFileName = InputFileName
+
+        convert_vtt2srt(InputFileName, OutputFileName)
+        
+
+      
+
